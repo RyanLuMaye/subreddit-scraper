@@ -131,7 +131,7 @@ def save_submission(submission, subreddit_directory):
     json_contents = json.dumps({
         "title": submission.title,
         "text": submission.selftext,
-        "author": submission.author_fullname,
+        "author": "DELETED" if submission.author is None else submission.author_fullname,
         "id": submission.id,
         "upvotes": submission.ups,
     })
@@ -162,7 +162,7 @@ def scrape_subreddit(reddit, subreddit, upvote_threshold, submission_search_stra
         analyze_submission_comments(submission, analyzed_comments, subreddit_comment_directory, upvote_threshold)
 
 
-def scrape_subreddits(*subreddits, upvote_threshold=10, submission_search_strategy=lambda x: x.top(limit=50), skip_saved_submissions=False):
+def scrape_subreddits(*subreddits, upvote_threshold=10, submission_search_strategy=lambda x: x.top(limit=100), skip_saved_submissions=False):
 
     authentication = get_authentication_data()
     reddit = praw.Reddit(
